@@ -1,47 +1,112 @@
-<#import "layout.ftlh" as main>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurants List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: auto;
+        }
+        .restaurant-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .restaurant-item {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #f9f9f9;
+        }
+        .restaurant-item h2 {
+            margin-top: 0;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .pagination {
+            justify-content: center;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
 
-<@main.layout ; spring>
-
-
-    <h2>Hello  مرحبًا  Привет  こんにちは :) !</h2>
-
-    <div class="row backpost">
-
-        <div class="col col-12 col-md-6 colpost"> <img src="../static/images/photo.jpg" class="w-100" alt="flats">
+<header>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Home</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
         </div>
+        <#assign known = SPRING_SECURITY_CONTEXT?? >
+        <#if known>
+            <#assign
+            user = SPRING_SECURITY_CONTEXT.authentication.principal
+            name = user.getUsername()
+            >
+            <a href="/profile" class="text-dark m-2 m-sm-0">
+                <span class="btn btn-outline-info m-2">Profile</span>
+            </a>
 
-        <div class="col col-12 col-md-6 colpost">
+            <#if _csrf??>
+                <form action="/auth/logout" method="post">
+                    <input type="hidden" name="${(_csrf.parameterName)!'csrf'}"
+                           value="${(_csrf.token)!'--no-token--'}"/>
+                    <button type="submit" class="btn btn-outline-info m-2" id="logout">Logout</button>
+                </form>
+            <#else>
+                <a href="/auth/logout" class="btn btn-outline-info m-2" id="logout">Logout</a>
+            </#if>
+        <#else>
+            <a href="/auth/login" class="btn btn-outline-info m-2">Login</a>
+            <a href="/profile/register" class="btn btn-outline-info m-2">Register</a>
+        </#if>
+    </nav>
+</header>
 
-            <p class="mt-3"><strong class="poststrong">Create an account and then open new resume for different opportunity</strong></p>
+<body>
+<div class="container">
+    <h1>Restaurants</h1>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <#if restaurants.hasPrevious()>
+                <li class="page-item"><a class="page-link" href="/?page=${restaurants.number - 1}">Previous</a></li>
+            <#else>
+                <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+            </#if>
 
-            <p class="postp-2">Make a Business it is easy open new vacancy for your company and start grow with us  <br> together !</p>
+            <#list 0..(restaurants.totalPages - 1) as page>
+                <li class="page-item <#if restaurants.number == page>active</#if>">
+                    <a class="page-link" href="/?page=${page}">${page + 1}</a>
+                </li>
+            </#list>
 
-        </div>
+            <#if restaurants.hasNext()>
+                <li class="page-item"><a class="page-link" href="/?page=${restaurants.number + 1}">Next</a></li>
+            <#else>
+                <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+            </#if>
+        </ul>
+    </nav>
 
-    </div>
-
-    <div class="row mt-5 g-0">
-
-        <div class="col col-12  col-md-12 col-lg-6 ">
-
-            <div class="card rounded-0 yellowleft h-100">
-                <h4 class="mt-5 ms-5">It started out as a simple <br> idea and evolved into our <br> passion</h4>
-
-                <p class="yellowp mt-4 ms-5">Open your heart to work with different people from around world <br>and make a new
-                    friends and grow your connections <br>it is not hard to do it just be confident and smile it is sunnah
-                    and work hard !</p>
-
-            </div>
-
-        </div>
-
-        <div class="col col-12 col-md-12 col-lg-6">
-            <div class="card rounded-0 h-100">
-                <img src="../static/images/photo-group.jpg" alt="group">
-            </div>
-        </div>
-
-    </div>
-
-
-</@main.layout>
+    <ul class="restaurant-list">
+        <#list restaurants.content as restaurant>
+            <li class="restaurant-item">
+                <h2><a href="/restaurant/${restaurant.id}" class="btn btn-primary">${restaurant.name}</a></h2>
+                <p><strong>Address:</strong> ${restaurant.address}</p>
+                <p><strong>Description:</strong> ${restaurant.description}</p>
+            </li>
+        </#list>
+    </ul>
+</div>
+</body>
+</html>
