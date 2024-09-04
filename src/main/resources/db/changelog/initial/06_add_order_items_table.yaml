@@ -1,0 +1,39 @@
+databaseChangeLog:
+  - changeSet:
+      id: Create order items table
+      author: Chyngyz
+      changes:
+        - createTable:
+            tableName: order_items
+            columns:
+              - column:
+                  name: id
+                  type: Long
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: order_id
+                  type: Long
+                  constraints:
+                    foreignKeyName: fk_order_id_for_order_items
+                    references: orders(id)
+                    nullable: false
+              - column:
+                  name: dish_id
+                  type: Long
+                  constraints:
+                    foreignKeyName: fk_dish_id_for_order_items
+                    references: dishes(id)
+                    nullable: false
+              - column:
+                  name: quantity
+                  type: Long
+                  constraints:
+                    nullable: false
+              - column:
+                  name: total_price
+                  type: Long
+                  constraints:
+                    nullable: false

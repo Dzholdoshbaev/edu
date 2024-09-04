@@ -1,0 +1,37 @@
+databaseChangeLog:
+  - changeSet:
+      id: added dishes table
+      author: chyngyz
+      changes:
+        - createTable:
+            tableName: dishes
+            columns:
+              - column:
+                  name: id
+                  type: Long
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: price
+                  type: Long
+                  constraints:
+                    nullable: false
+              - column:
+                  name: restaurant_id
+                  type: Long
+                  constraints:
+                    foreignKeyName: fk_restaurant_id_for_dishes
+                    references: restaurants(id)
+                    nullable: false
