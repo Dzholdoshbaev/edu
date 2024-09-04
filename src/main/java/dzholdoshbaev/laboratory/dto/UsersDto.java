@@ -33,6 +33,5 @@ public class UsersDto {
     private String phoneNumber;
     private String avatar;
     private Boolean enabled;
-    @NotNull(message = "Should be not blank")
     private Long authorityId;
 }

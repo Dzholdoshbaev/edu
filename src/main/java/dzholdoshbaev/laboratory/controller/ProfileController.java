@@ -6,13 +6,10 @@ import dzholdoshbaev.laboratory.dto.UsersDto;
 import dzholdoshbaev.laboratory.model.Users;
 import dzholdoshbaev.laboratory.service.AuthoritiesService;
 import dzholdoshbaev.laboratory.service.UsersService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -49,7 +46,6 @@ public class ProfileController {
             Model model) {
 
         if (bindingResult.hasErrors()) {
-            model.addAttribute("authoritiesUser", authoritiesService.getAllAuthorities());
             return "auth/register";
         }
 
@@ -60,25 +56,9 @@ public class ProfileController {
 
     @GetMapping("/register")
     public String create(Model model) {
-        model.addAttribute("authoritiesUser", authoritiesService.getAllAuthorities());
         model.addAttribute("usersDto", new UsersDto());
         return "auth/register";
     }
 
-    @PostMapping("/edit")
-    public String editResume(Users usersDto , Principal principal , HttpServletRequest request, HttpServletResponse response) {
-        String username = principal.getName();
-        usersService.editResume(usersDto, username);
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null) {
-            new SecurityContextLogoutHandler().logout(request, response, authentication);
-        }
-        return "redirect:/auth/login";
-    }
-
-    @GetMapping("/edit")
-    public String editResume() {
-        return "auth/editUser";
-    }
 }

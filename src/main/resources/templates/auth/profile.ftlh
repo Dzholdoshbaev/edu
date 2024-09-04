@@ -107,7 +107,6 @@
             <p class="card-text"><strong>Age:</strong> ${userDto.age!"Not specified"}</p>
             <p class="card-text"><strong>Email:</strong> ${userDto.email!"Not specified"}</p>
             <p class="card-text"><strong>Phone Number:</strong> ${userDto.phoneNumber!"User Without Phone"}</p>
-            <a href="profile/edit" class="btn btn-outline-info mt-3">Edit profile</a>
         </div>
     </div>
 </div>

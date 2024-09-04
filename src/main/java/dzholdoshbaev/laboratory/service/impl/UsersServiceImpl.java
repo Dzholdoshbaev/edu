@@ -3,6 +3,7 @@ package dzholdoshbaev.laboratory.service.impl;
 
 
 import dzholdoshbaev.laboratory.common.Utilities;
+import dzholdoshbaev.laboratory.constant.Authority;
 import dzholdoshbaev.laboratory.dto.UsersDto;
 import dzholdoshbaev.laboratory.model.Authorities;
 import dzholdoshbaev.laboratory.model.Users;
@@ -33,8 +34,7 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public void createUser(UsersDto usersDto) {
 
-        Authorities authority = authoritiesRepository.findById(usersDto.getAuthorityId())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid authority ID"));
+        Authorities authority = authoritiesRepository.findByAuthority(Authority.USER.getAuthority());
 
         Users user = Users.builder()
                 .name(usersDto.getName())
