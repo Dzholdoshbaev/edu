@@ -3,6 +3,8 @@ package dzholdoshbaev.laboratory.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 
 @Builder
 @NoArgsConstructor
@@ -37,4 +39,6 @@ public class Users {
     @ManyToOne
     @JoinColumn(name = "authority_id")
     private Authorities authorities;
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "users")
+    private List<Orders> ordersList;
 }
