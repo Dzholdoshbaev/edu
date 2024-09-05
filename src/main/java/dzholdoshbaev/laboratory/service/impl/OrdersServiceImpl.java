@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -54,6 +55,11 @@ public class OrdersServiceImpl implements OrdersService {
     @Override
     public List<Orders> getAllOrdersByUser(Users user) {
         log.info("Get all orders by user {}", user);
-       return ordersRepository.findAllByUserId(user.getId());
+
+        List<Orders> ordersList = ordersRepository.findAllByUserId(user.getId());
+
+        return ordersList.stream()
+                .sorted((o1, o2) -> o1.getOrderDate().compareTo(o2.getOrderDate()))
+                .collect(Collectors.toList());
     }
 }
