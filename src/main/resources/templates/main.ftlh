@@ -34,12 +34,15 @@
         .pagination {
             justify-content: center;
         }
+        .navbar {
+            margin-bottom: 20px;
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
-
+<body>
 <header>
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
@@ -79,32 +82,15 @@
     </nav>
 </header>
 
-<body>
-<div class="container">
+<div class="container mt-4">
     <h1>Restaurants</h1>
-    <nav aria-label="Page navigation example">
-        <ul class="pagination">
-            <#if restaurants.hasPrevious()>
-                <li class="page-item"><a class="page-link" href="/?page=${restaurants.number - 1}">Previous</a></li>
-            <#else>
-                <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-            </#if>
 
-            <#list 0..(restaurants.totalPages - 1) as page>
-                <li class="page-item <#if restaurants.number == page>active</#if>">
-                    <a class="page-link" href="/?page=${page}">${page + 1}</a>
-                </li>
-            </#list>
+    <form action="/" method="get" class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" name="search" value="${search}">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
 
-            <#if restaurants.hasNext()>
-                <li class="page-item"><a class="page-link" href="/?page=${restaurants.number + 1}">Next</a></li>
-            <#else>
-                <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
-            </#if>
-        </ul>
-    </nav>
-
-    <ul class="restaurant-list">
+    <ul class="restaurant-list mt-4">
         <#list restaurants.content as restaurant>
             <li class="restaurant-item">
                 <h2><a href="/restaurants/${restaurant.id}" class="btn btn-primary">${restaurant.name}</a></h2>
@@ -113,6 +99,46 @@
             </li>
         </#list>
     </ul>
+
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            <#if restaurants.hasPrevious()>
+                <li class="page-item">
+                    <a class="page-link" href="?search=${search}&page=${restaurants.number - 1}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            <#else>
+                <li class="page-item disabled">
+                    <a class="page-link" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            </#if>
+
+            <#list 0..(restaurants.totalPages - 1) as page>
+                <li class="page-item <#if restaurants.number == page>active</#if>">
+                    <a class="page-link" href="?search=${search}&page=${page}">${page + 1}</a>
+                </li>
+            </#list>
+
+            <#if restaurants.hasNext()>
+                <li class="page-item">
+                    <a class="page-link" href="?search=${search}&page=${restaurants.number + 1}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            <#else>
+                <li class="page-item disabled">
+                    <a class="page-link" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </#if>
+        </ul>
+    </nav>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
