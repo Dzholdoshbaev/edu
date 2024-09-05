@@ -22,6 +22,13 @@ public class RestaurantsServiceImpl implements RestaurantsService {
     public Page<Restaurants> getAllRestaurants(Pageable pageable) {
         Page<Restaurants> restaurantsPage = restaurantsRepository.findAll(pageable);
         List<Restaurants> restaurants = restaurantsPage.getContent();
+        log.info("return all restaurants");
         return new PageImpl<>(restaurants, pageable, restaurantsPage.getTotalElements());
+    }
+
+    @Override
+    public Restaurants getRestaurantById(Long id) {
+        log.info("getRestaurantById");
+        return restaurantsRepository.findById(id).orElse(null);
     }
 }

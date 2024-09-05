@@ -46,6 +46,7 @@ public class ImageServiceImpl implements ImageService {
         try (OutputStream os = Files.newOutputStream(filePath)) {
             os.write(file.getBytes());
             usersRepository.updateUserPhoto(username,resultFileName);
+            log.info("Image uploaded successfully");
         }
     }
 
@@ -61,6 +62,7 @@ public class ImageServiceImpl implements ImageService {
             byte[] image = Files.readAllBytes(filePath);
             Resource resource = new ByteArrayResource(image);
 
+            log.info("Image downloaded successfully");
             return ResponseEntity.ok()
                     .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"")
                     .contentLength(resource.contentLength())

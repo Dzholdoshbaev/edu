@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Restaurants List</title>
+    <title>Restaurant Details</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -13,23 +13,29 @@
             max-width: 1200px;
             margin: auto;
         }
-        .restaurant-list {
+        .restaurant-details {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            margin-bottom: 20px;
+        }
+        .restaurant-details h1 {
+            margin-top: 0;
+        }
+        .dishes-list {
             list-style-type: none;
             padding: 0;
         }
-        .restaurant-item {
+        .dish-item {
             border: 1px solid #ddd;
             border-radius: 4px;
             padding: 10px;
             margin-bottom: 10px;
             background-color: #f9f9f9;
         }
-        .restaurant-item h2 {
+        .dish-item h3 {
             margin-top: 0;
-        }
-        h1 {
-            text-align: center;
-            color: #333;
         }
         .pagination {
             justify-content: center;
@@ -75,38 +81,45 @@
 
 <body>
 <div class="container">
-    <h1>Restaurants</h1>
+    <div class="restaurant-details">
+        <h1>${restaurants.name}</h1>
+        <p><strong>Address:</strong> ${restaurants.address}</p>
+        <p><strong>Description:</strong> ${restaurants.description}</p>
+    </div>
+
+    <h2>Menu</h2>
+    <ul class="dishes-list">
+        <#list restaurantDishes.content as dish>
+            <li class="dish-item">
+                <h3>${dish.name}</h3>
+                <p><strong>Description:</strong> ${dish.description}</p>
+                <p><strong>Price:</strong> $${dish.price}</p>
+            </li>
+        </#list>
+    </ul>
+
+    <!-- Pagination for dishes -->
     <nav aria-label="Page navigation example">
         <ul class="pagination">
-            <#if restaurants.hasPrevious()>
-                <li class="page-item"><a class="page-link" href="/?page=${restaurants.number - 1}">Previous</a></li>
+            <#if restaurantDishes.hasPrevious()>
+                <li class="page-item"><a class="page-link" href="/restaurants/${restaurants.id}?page=${restaurantDishes.number - 1}">Previous</a></li>
             <#else>
                 <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
             </#if>
 
-            <#list 0..(restaurants.totalPages - 1) as page>
-                <li class="page-item <#if restaurants.number == page>active</#if>">
-                    <a class="page-link" href="/?page=${page}">${page + 1}</a>
+            <#list 0..(restaurantDishes.totalPages - 1) as page>
+                <li class="page-item <#if restaurantDishes.number == page>active</#if>">
+                    <a class="page-link" href="/restaurants/${restaurants.id}?page=${page}">${page + 1}</a>
                 </li>
             </#list>
 
-            <#if restaurants.hasNext()>
-                <li class="page-item"><a class="page-link" href="/?page=${restaurants.number + 1}">Next</a></li>
+            <#if restaurantDishes.hasNext()>
+                <li class="page-item"><a class="page-link" href="/restaurants/${restaurants.id}?page=${restaurantDishes.number + 1}">Next</a></li>
             <#else>
                 <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
             </#if>
         </ul>
     </nav>
-
-    <ul class="restaurant-list">
-        <#list restaurants.content as restaurant>
-            <li class="restaurant-item">
-                <h2><a href="/restaurants/${restaurant.id}" class="btn btn-primary">${restaurant.name}</a></h2>
-                <p><strong>Address:</strong> ${restaurant.address}</p>
-                <p><strong>Description:</strong> ${restaurant.description}</p>
-            </li>
-        </#list>
-    </ul>
 </div>
 </body>
 </html>
