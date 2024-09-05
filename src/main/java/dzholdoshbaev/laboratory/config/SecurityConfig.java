@@ -1,5 +1,6 @@
 package dzholdoshbaev.laboratory.config;
 
+import dzholdoshbaev.laboratory.constant.Authority;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,7 +41,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(HttpMethod.POST,"/images").authenticated()
                         .requestMatchers(HttpMethod.GET,"/profile").authenticated()
-                        .requestMatchers(HttpMethod.GET,"/profile/edit").authenticated()
+                        .requestMatchers(HttpMethod.POST,"/orders/confirm").hasAuthority(Authority.USER.getAuthority())
                         .anyRequest().permitAll());
         return http.build();
     }

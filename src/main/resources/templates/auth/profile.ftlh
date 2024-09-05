@@ -32,9 +32,12 @@
         .card-text {
             font-size: 1rem;
         }
+        .order-table th, .order-table td {
+            text-align: center;
+        }
     </style>
 </head>
-
+<body>
 <header>
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
@@ -42,7 +45,6 @@
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
             <a href="/orders/order" class="text-dark mx-2" aria-label="Orders">
                 <i class="fas fa-shopping-cart"></i>
                 <span class="badge bg-danger">3</span>
@@ -57,36 +59,21 @@
             <a href="/profile" class="text-dark m-2 m-sm-0">
                 <span class="btn btn-outline-info m-2">Profile</span>
             </a>
-
             <#if _csrf??>
-
                 <form action="/auth/logout" method="post">
-
-                    <input type="hidden" name="${(_csrf.parameterName)!'csrf'}"
-
-                           value="${(_csrf.token)!'--no-token--'}"/>
-
+                    <input type="hidden" name="${(_csrf.parameterName)!'csrf'}" value="${(_csrf.token)!'--no-token--'}"/>
                     <button type="submit" class="btn btn-outline-info m-2" id="logout">Logout</button>
-
                 </form>
-
             <#else>
-
                 <a href="/auth/logout" class="btn btn-outline-info m-2" id="logout">Logout</a>
-
             </#if>
-
         <#else>
-            <a href="/auth/login"
-               class="btn btn-outline-info m-2">Login</a>
-            <a href="/profile/register"
-               class="btn btn-outline-info m-2">Register</a>
+            <a href="/auth/login" class="btn btn-outline-info m-2">Login</a>
+            <a href="/profile/register" class="btn btn-outline-info m-2">Register</a>
         </#if>
-
     </nav>
 </header>
 
-<body>
 <div class="container profile-container">
     <div class="row">
         <div class="col-md-4 text-center">
@@ -99,11 +86,9 @@
             <#else>
                 <img src="/static/images/nophoto.jpg" alt="ProfilePhoto" class="profile-img"/>
             </#if>
-
             <form action="/images" method="post" enctype="multipart/form-data" class="mt-3">
                 <#if _csrf??>
-                    <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}"
-                           value="${(_csrf.token)!'csrf-token'}"/>
+                    <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}" value="${(_csrf.token)!'csrf-token'}"/>
                 </#if>
                 <input type="file" name="file"/>
                 <button type="submit" class="btn btn-outline-info">Change Photo</button>
@@ -114,6 +99,30 @@
             <p class="card-text"><strong>Age:</strong> ${userDto.age!"Not specified"}</p>
             <p class="card-text"><strong>Email:</strong> ${userDto.email!"Not specified"}</p>
             <p class="card-text"><strong>Phone Number:</strong> ${userDto.phoneNumber!"User Without Phone"}</p>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <h4>Orders</h4>
+            <table class="table table-bordered order-table">
+                <thead>
+                <tr>
+                    <th>Total Amount</th>
+                    <th>Order Date</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                <#list orders as order>
+                    <tr>
+                        <td>${order.totalAmount}</td>
+                        <td>${order.orderDate}</td>
+                        <td>${order.status}</td>
+                    </tr>
+                </#list>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

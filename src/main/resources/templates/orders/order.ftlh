@@ -88,6 +88,10 @@
         </table>
 
         <form action="/orders/confirm" method="post">
+            <#if _csrf??>
+                <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}"
+                       value="${(_csrf.token)!'csrf-token'}"/>
+            </#if>
             <button type="submit" class="btn btn-primary">Confirm Order</button>
         </form>
 

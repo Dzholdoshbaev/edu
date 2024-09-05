@@ -3,8 +3,10 @@ package dzholdoshbaev.laboratory.controller;
 
 
 import dzholdoshbaev.laboratory.dto.UsersDto;
+import dzholdoshbaev.laboratory.model.Orders;
 import dzholdoshbaev.laboratory.model.Users;
 import dzholdoshbaev.laboratory.service.AuthoritiesService;
+import dzholdoshbaev.laboratory.service.OrdersService;
 import dzholdoshbaev.laboratory.service.UsersService;
 
 import jakarta.validation.Valid;
@@ -19,7 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.security.Principal;
-
+import java.util.List;
 
 
 @Controller
@@ -28,12 +30,15 @@ import java.security.Principal;
 public class ProfileController {
     private final UsersService usersService;
     private final AuthoritiesService authoritiesService;
+    private final OrdersService ordersService;
 
 
     @GetMapping
     public String profile(Model model, Principal principal) {
         String username = principal.getName();
         Users user = usersService.getUserByEmail(username);
+        List<Orders> ordersList = ordersService.getAllOrdersByUser(user);
+        model.addAttribute("orders" , ordersList);
         model.addAttribute("userDto", user);
         return "auth/profile";
     }

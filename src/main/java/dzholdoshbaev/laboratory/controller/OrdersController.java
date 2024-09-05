@@ -2,7 +2,10 @@ package dzholdoshbaev.laboratory.controller;
 
 import dzholdoshbaev.laboratory.model.Dishes;
 import dzholdoshbaev.laboratory.model.Restaurants;
+import dzholdoshbaev.laboratory.model.Users;
 import dzholdoshbaev.laboratory.service.DishesService;
+import dzholdoshbaev.laboratory.service.OrdersService;
+import dzholdoshbaev.laboratory.service.UsersService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -11,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +24,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrdersController {
  private final DishesService dishesService;
-
+    private final UsersService usersService;
+    private final OrdersService ordersService;
     @GetMapping("/{dishId}")
     public String addDishToOrder(@PathVariable Long dishId,
                                  HttpSession session,
@@ -54,10 +59,16 @@ public class OrdersController {
     }
 
     @PostMapping("/confirm")
-    public String confirmOrder(HttpSession session) {
+    public String confirmOrder(HttpSession session, Principal principal) {
         List<Long> orderIds = (List<Long>) session.getAttribute("orderIds");
         if (orderIds != null) {
+
+            ordersService.createdOrder(principal.getName(),orderIds);
+
+            //сделать логику сохранения в базу , заказ может сделать зарегестрированный пользователь
+
             session.removeAttribute("orderIds");
+            return "redirect:/profile";
         }
         return "redirect:/";
     }
