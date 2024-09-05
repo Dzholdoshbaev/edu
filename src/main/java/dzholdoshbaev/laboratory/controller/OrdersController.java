@@ -26,6 +26,27 @@ public class OrdersController {
  private final DishesService dishesService;
     private final UsersService usersService;
     private final OrdersService ordersService;
+
+
+
+    @GetMapping("delete/{dishId}")
+    public String deleteOrder(@PathVariable Long dishId, HttpSession session, Model model) {
+        List<Long> orderIds = (List<Long>) session.getAttribute("orderIds");
+        if (orderIds == null) {
+            orderIds = new ArrayList<>();
+        }
+
+        orderIds.remove(dishId);
+
+        session.setAttribute("orderIds", orderIds);
+
+        List<Dishes> dishes = dishesService.findDishesByIds(orderIds);
+        model.addAttribute("dishes", dishes);
+
+        return "orders/order";
+    }
+
+
     @GetMapping("/{dishId}")
     public String addDishToOrder(@PathVariable Long dishId,
                                  HttpSession session,
@@ -64,8 +85,6 @@ public class OrdersController {
         if (orderIds != null) {
 
             ordersService.createdOrder(principal.getName(),orderIds);
-
-            //сделать логику сохранения в базу , заказ может сделать зарегестрированный пользователь
 
             session.removeAttribute("orderIds");
             return "redirect:/profile";

@@ -82,6 +82,11 @@
                     <td>${dish.id}</td>
                     <td>${dish.name}</td>
                     <td>${dish.price}</td>
+                    <td>
+                        <a href="/orders/delete/${dish.id}" class="btn btn-danger btn-sm">
+                            <i class="bi bi-trash"></i> Удалить
+                        </a>
+                    </td>
                 </tr>
             </#list>
             </tbody>
