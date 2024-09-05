@@ -74,6 +74,7 @@
                 <th>Name</th>
                 <th>Price</th>
                 <th>#</th>
+                <th>Total Amount : ${totalAmount}</th>
             </tr>
             </thead>
             <tbody>

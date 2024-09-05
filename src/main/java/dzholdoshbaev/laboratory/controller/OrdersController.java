@@ -41,6 +41,11 @@ public class OrdersController {
         session.setAttribute("orderIds", orderIds);
 
         List<Dishes> dishes = dishesService.findDishesByIds(orderIds);
+        Double totalAmount = dishes.stream()
+                .mapToDouble(Dishes::getPrice)
+                .sum();
+
+        model.addAttribute("totalAmount" ,totalAmount);
         model.addAttribute("dishes", dishes);
 
         return "orders/order";
@@ -75,6 +80,12 @@ public class OrdersController {
             orderIds = new ArrayList<>();
         }
         List<Dishes> dishes = dishesService.findDishesByIds(orderIds);
+
+        Double totalAmount = dishes.stream()
+                .mapToDouble(Dishes::getPrice)
+                .sum();
+
+        model.addAttribute("totalAmount" ,totalAmount);
         model.addAttribute("dishes", dishes);
         return "orders/order";
     }
