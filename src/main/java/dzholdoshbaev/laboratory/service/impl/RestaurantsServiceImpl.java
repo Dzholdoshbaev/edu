@@ -31,4 +31,9 @@ public class RestaurantsServiceImpl implements RestaurantsService {
         log.info("getRestaurantById");
         return restaurantsRepository.findById(id).orElse(null);
     }
+
+    @Override
+    public Page<Restaurants> findByName(String name, Pageable pageable) {
+        return restaurantsRepository.findByNameContainingIgnoreCase(name, pageable);
+    }
 }

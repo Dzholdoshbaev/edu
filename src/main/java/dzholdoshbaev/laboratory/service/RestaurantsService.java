@@ -8,4 +8,6 @@ public interface RestaurantsService {
     Page<Restaurants> getAllRestaurants(Pageable pageable);
 
     Restaurants getRestaurantById(Long id);
+
+    Page<Restaurants> findByName(String name, Pageable pageable);
 }
