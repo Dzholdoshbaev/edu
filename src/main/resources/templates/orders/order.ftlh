@@ -71,6 +71,7 @@
         <table class="table">
             <thead>
             <tr>
+                <th>Restaurant</th>
                 <th>Name</th>
                 <th>Price</th>
                 <th>#</th>
@@ -80,6 +81,7 @@
             <tbody>
             <#list dishes as dish>
                 <tr>
+                    <td>${dish.restaurants.name}</td>
                     <td>${dish.name}</td>
                     <td>${dish.price}</td>
                     <td>
