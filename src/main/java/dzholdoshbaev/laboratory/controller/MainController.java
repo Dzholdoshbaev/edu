@@ -3,7 +3,6 @@ package dzholdoshbaev.laboratory.controller;
 import dzholdoshbaev.laboratory.model.Restaurants;
 import dzholdoshbaev.laboratory.service.RestaurantsService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
