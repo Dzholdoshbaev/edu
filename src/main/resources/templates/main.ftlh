@@ -50,7 +50,7 @@
 
             <a href="/orders/order" class="text-dark mx-2" aria-label="Orders">
                 <i class="fas fa-shopping-cart"></i>
-                <span class="badge bg-danger">3</span>
+                <span class="badge bg-danger">!</span>
             </a>
         </div>
         <#assign known = SPRING_SECURITY_CONTEXT?? >
