@@ -71,15 +71,14 @@
         <table class="table">
             <thead>
             <tr>
-                <th>#</th>
                 <th>Name</th>
                 <th>Price</th>
+                <th>#</th>
             </tr>
             </thead>
             <tbody>
             <#list dishes as dish>
                 <tr>
-                    <td>${dish.id}</td>
                     <td>${dish.name}</td>
                     <td>${dish.price}</td>
                     <td>
