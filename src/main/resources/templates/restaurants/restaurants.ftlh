@@ -98,7 +98,6 @@
         </#list>
     </ul>
 
-    <!-- Pagination for dishes -->
     <nav aria-label="Page navigation example">
         <ul class="pagination">
             <#if restaurantDishes.hasPrevious()>

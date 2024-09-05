@@ -35,3 +35,6 @@ databaseChangeLog:
                   type: varchar(50)
                   constraints:
                     nullable: false
+              - column:
+                  name: session_id
+                  type: varchar(255)

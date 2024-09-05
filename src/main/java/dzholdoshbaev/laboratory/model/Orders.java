@@ -27,6 +27,8 @@ public class Orders {
     @ManyToOne
     @JoinColumn(name = "users_id")
     private Users users;
+    @Column(name = "session_id")
+    private String sessionId;
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "orders")
     private List<OrderItems> orderItemsList;
 }
