@@ -43,6 +43,8 @@ public class OrdersController {
         Double totalAmount = dishes.stream()
                 .mapToDouble(Dishes::getPrice)
                 .sum();
+        int count = dishes.size();
+        model.addAttribute("count", count);
 
         model.addAttribute("totalAmount" ,totalAmount);
         model.addAttribute("dishes", dishes);
@@ -62,11 +64,14 @@ public class OrdersController {
         if (orderIds == null) {
             orderIds = new ArrayList<>();
         }
-
         orderIds.add(dishId);
         session.setAttribute("orderIds", orderIds);
 
+
         Restaurants restaurant = dishesService.findRestaurantIdByDishes(dishId);
+        List<Dishes> dishes = dishesService.findDishesByIds(orderIds);
+        int count = dishes.size();
+        model.addAttribute("count", count);
         model.addAttribute("restaurants", restaurant);
         model.addAttribute("restaurantDishes", dishesService.findAllRestaurantDishes(restaurant.getId(), pageable));
         return "restaurants/restaurants";
@@ -79,6 +84,8 @@ public class OrdersController {
             orderIds = new ArrayList<>();
         }
         List<Dishes> dishes = dishesService.findDishesByIds(orderIds);
+        int count = dishes.size();
+        model.addAttribute("count", count);
 
         Double totalAmount = dishes.stream()
                 .mapToDouble(Dishes::getPrice)
