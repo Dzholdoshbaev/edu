@@ -22,6 +22,8 @@ public class Dishes {
     private String description;
     @Column(name = "price")
     private Long price;
+    @Column(name = "amount")
+    private Long amount;
     @ToString.Exclude
     @ManyToOne
     @JoinColumn(name = "restaurant_id")

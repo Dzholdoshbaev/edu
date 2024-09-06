@@ -19,7 +19,7 @@
 
             <a href="/" class="text-dark mx-2" aria-label="Orders">
                 <i class="fas fa-shopping-cart"></i>
-                <span class="badge bg-danger">!</span>
+                <span class="badge bg-danger">${count!"0"}</span>
             </a>
         </div>
         <#assign known = SPRING_SECURITY_CONTEXT?? >
@@ -74,6 +74,7 @@
                 <th>Restaurant</th>
                 <th>Name</th>
                 <th>Price</th>
+                <th>amount of  dish</th>
                 <th>#</th>
                 <th>Total Amount : ${totalAmount}</th>
             </tr>
@@ -84,6 +85,7 @@
                     <td>${dish.restaurants.name}</td>
                     <td>${dish.name}</td>
                     <td>${dish.price}</td>
+                    <td>${dish.amount}</td>
                     <td>
                         <a href="/orders/delete/${dish.id}" class="btn btn-danger btn-sm">
                             <i class="bi bi-trash"></i> Удалить

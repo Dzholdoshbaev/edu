@@ -5,6 +5,7 @@ import dzholdoshbaev.laboratory.model.Dishes;
 import dzholdoshbaev.laboratory.model.OrderItems;
 import dzholdoshbaev.laboratory.model.Orders;
 import dzholdoshbaev.laboratory.model.Users;
+import dzholdoshbaev.laboratory.repository.DishesRepository;
 import dzholdoshbaev.laboratory.repository.OrderItemsRepository;
 import dzholdoshbaev.laboratory.repository.OrdersRepository;
 import dzholdoshbaev.laboratory.service.DishesService;
@@ -26,6 +27,7 @@ public class OrdersServiceImpl implements OrdersService {
     private final DishesService dishesService;
     private final UsersService usersService;
     private final OrderItemsRepository orderItemsRepository;
+    private final DishesRepository dishesRepository;
 
 
     @Override
@@ -33,7 +35,16 @@ public class OrdersServiceImpl implements OrdersService {
         Users user = usersService.getUserByEmail(username);
         List<Dishes> dishes = dishesService.findDishesByIds(orderIds);
 
-        Long totalPrice = dishes.stream().mapToLong(Dishes::getPrice).sum();
+        Long totalPrice = 0L;
+
+        for (Long orderId : orderIds) {
+            Dishes dish = dishesRepository.findById(orderId).
+                    orElseThrow(() -> new IllegalArgumentException("Invalid category ID"));
+            totalPrice += dish.getPrice();
+
+        }
+
+
         Orders order = new Orders();
         order.setUsers(user);
         order.setTotalAmount(totalPrice);
@@ -41,13 +52,19 @@ public class OrdersServiceImpl implements OrdersService {
         order.setStatus(Status.ORDERED.getAuthority());
         ordersRepository.save(order);
 
-        for (Dishes dish : dishes) {
+
+        for (Long orderId : orderIds) {
+
+            Dishes dish = dishesRepository.findById(orderId).
+                    orElseThrow(() -> new IllegalArgumentException("Invalid category ID"));
+
             OrderItems orderItems = new OrderItems();
             orderItems.setOrders(order);
             orderItems.setDishes(dish);
             orderItems.setQuantity(1L);
             orderItems.setTotalPrice(dish.getPrice());
             orderItemsRepository.save(orderItems);
+
         }
 
     }
