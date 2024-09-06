@@ -74,6 +74,7 @@
                 <th>Restaurant</th>
                 <th>Name</th>
                 <th>Price</th>
+                <th>amount of  dish</th>
                 <th>#</th>
                 <th>Total Amount : ${totalAmount}</th>
             </tr>
@@ -84,6 +85,7 @@
                     <td>${dish.restaurants.name}</td>
                     <td>${dish.name}</td>
                     <td>${dish.price}</td>
+                    <td>${dish.amount}</td>
                     <td>
                         <a href="/orders/delete/${dish.id}" class="btn btn-danger btn-sm">
                             <i class="bi bi-trash"></i> Удалить

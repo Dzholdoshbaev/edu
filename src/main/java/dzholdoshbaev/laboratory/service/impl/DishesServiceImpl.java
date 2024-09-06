@@ -28,6 +28,12 @@ public class DishesServiceImpl implements DishesService {
         return new PageImpl<>(dishes, pageable, dishesPage.getTotalElements());
    }
 
+   @Override
+   public Dishes findById(Long id) {
+        log.debug("Request to get Dishes : {}", id);
+        return dishesRepository.findById(id).orElseThrow(NoSuchElementException::new);
+   }
+
 
    @Override
   public Restaurants findRestaurantIdByDishes(Long dishesId) {

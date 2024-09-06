@@ -10,6 +10,8 @@ import java.util.List;
 public interface DishesService {
     Page<Dishes> findAllRestaurantDishes(Long restaurantId, Pageable pageable);
 
+    Dishes findById(Long id);
+
     Restaurants  findRestaurantIdByDishes(Long dishesId);
 
     List<Dishes> findDishesByIds(List<Long> orderIds);

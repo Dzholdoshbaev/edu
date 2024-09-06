@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Controller
@@ -39,13 +41,27 @@ public class OrdersController {
 
         session.setAttribute("orderIds", orderIds);
 
+        Map<Dishes, Long> myMap = new HashMap<>();
+        int totalAmount = 0;
+
+        for (Long orderId : orderIds) {
+            Dishes dishes = dishesService.findById(orderId);
+            totalAmount += dishes.getPrice();
+            myMap.put(dishes, myMap.getOrDefault(dishes, 0L) + 1L);
+        }
+
+
         List<Dishes> dishes = dishesService.findDishesByIds(orderIds);
-        Double totalAmount = dishes.stream()
-                .mapToDouble(Dishes::getPrice)
-                .sum();
+
+        for (Dishes dish : dishes) {
+            for (Map.Entry<Dishes, Long> entry : myMap.entrySet()) {
+                if (dish.equals(entry.getKey())) {
+                    dish.setAmount(entry.getValue());
+                }
+            }
+        }
         int count = dishes.size();
         model.addAttribute("count", count);
-
         model.addAttribute("totalAmount" ,totalAmount);
         model.addAttribute("dishes", dishes);
 
@@ -83,14 +99,28 @@ public class OrdersController {
         if (orderIds == null) {
             orderIds = new ArrayList<>();
         }
+
+        Map<Dishes, Long> myMap = new HashMap<>();
+        int totalAmount = 0;
+
+        for (Long orderId : orderIds) {
+            Dishes dishes = dishesService.findById(orderId);
+            totalAmount += dishes.getPrice();
+            myMap.put(dishes, myMap.getOrDefault(dishes, 0L) + 1L);
+        }
+
+
         List<Dishes> dishes = dishesService.findDishesByIds(orderIds);
+
+        for (Dishes dish : dishes) {
+            for (Map.Entry<Dishes, Long> entry : myMap.entrySet()) {
+                if (dish.equals(entry.getKey())) {
+                    dish.setAmount(entry.getValue());
+                }
+            }
+        }
         int count = dishes.size();
         model.addAttribute("count", count);
-
-        Double totalAmount = dishes.stream()
-                .mapToDouble(Dishes::getPrice)
-                .sum();
-
         model.addAttribute("totalAmount" ,totalAmount);
         model.addAttribute("dishes", dishes);
         return "orders/order";
