@@ -67,7 +67,7 @@
 
                             </div>
 
-                            <a href="/auth/forgot_password" class="btn btn-outline-info m-2" id="logout">Forgot password</a>
+<#--                            <a href="/auth/forgot_password" class="btn btn-outline-info m-2" id="logout">Forgot password</a>-->
 
                             <!-- Submit button -->
 
